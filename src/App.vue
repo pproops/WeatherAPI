@@ -1,16 +1,17 @@
 <template>
-  <div id="app" :class="typeof weather.main != 'undefined'
-   && weather.main.temp > 16 ? 'warm' : ''" >
+  <div id="app">
+    <div :class="(weather.weather[0].main).toLowerCase()">
     <main>
 
       <div class="search-box">
         <input 
           type="text" 
           class="search-bar" 
-          placeholder="Search..."
+          placeholder="Željeni grad..."
           v-model="query"
           @keypress="fetchWeather"
         />
+        
       </div>
 
       <div class="weather-wrap" v-if="typeof weather.main != 'undefined'" >
@@ -23,11 +24,15 @@
           <div class="temp">{{ Math.round(weather.main.temp) }}°c</div>
          <br>
           <div class="weather">{{ weather.weather[0].main }}</div>
-          <div class="description">{{ weather.weather[0].description }}</div>
-          <div id class="weatherIcons"> {{weather.weather[0].icon}}</div>
+          <br>
+         <div id class="weatherIcons"> <img style="width:100px;height:100px;" :src="'http://openweathermap.org/img/w/' + weather.weather[0].icon + '.png'">
+         <div class="description">{{ weather.weather[0].description }}</div>
+         </div>
+         
         </div>
       </div>
     </main>
+    </div>
   </div>
   
 </template>
@@ -66,8 +71,8 @@ export default {
 
     dateBuilder () {
       let d = new Date();
-      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
-      
+      let months = ["January", "February", "March", "April", "May",
+       "June", "July", "August", "September",
        "October", "November", "December"];
       let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       let day = days[d.getDay()];
@@ -98,16 +103,20 @@ body {
   background-position: bottom;
   transition: 0.3s;
 }
-#app.warm {
+#app .warm {
   background-image: url('./assets/sun-bg.jpg');
 
 }
-#app.cold {
+#app .clouds {
   background-image: url('./assets/clouds-bg.jpg'); 
+}
+
+#app .rain {
+  background-image: url('./assets/rain-bg.jpg');
 }
 main {
   
-  min-height: 100vh;
+  min-height: 90vh;
   padding: 35px;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
 }
@@ -120,7 +129,6 @@ main {
   display: block;
   width: 97%;
   padding: 15px;
-  
   color: #313131;
   font-size: 20px;
   appearance: none;
@@ -169,30 +177,35 @@ main {
 }
 .weather-box .description
 {
-  color: #FFF;
-  font-size: 20px;
+  color:black;
+  font-size: 15px;
   font-style: italic;
 }
 .weather-box .weatherIcons
 {
-padding: 8px 12px;
-
-color:blue;
-font-size: 50px;
-font-weight: 800;
-
-}
-.weather-box .weather {
   display: inline-block;
   padding: 12px 18px;
   color: rgb(255, 248, 248);
   font-size: 54px;
   font-weight: 700;
   font-style: initial;
-  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
   background-color:rgba(255, 255, 255, 0.25);
   border-radius: 16px;
   margin: 20px 0px;
   box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+
 }
+.weather-box .weather {
+  display: inline-block;
+  padding: 12px 18px;
+  color: rgb(255, 255, 255);
+  font-size: 40px;
+  font-weight: 700;
+  font-style: initial;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  margin: 20px 0px;
+  
+}
+
+
 </style>
